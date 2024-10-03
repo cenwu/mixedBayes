@@ -75,4 +75,4 @@ In longitudinal studies, the same subjects are measured repeatedly over time, le
 
 This package provides implementation for methods proposed in
 
-  - Fan, K., Jiang, Y., Ma, S., Wang, W. and Wu, C. (2023+). Robust Bayesian variable selection of Gene-environment interactions in the longitudinal study.(submitted)
+  - Fan, K., Jiang, Y., Ma, S., Wang, W. and Wu, C. (2024+). Robust Bayesian variable selection of Gene-environment interactions in the longitudinal study.(submitted)
