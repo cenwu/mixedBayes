@@ -3,9 +3,17 @@
 # mixedBayes
 
 > Bayesian Longitudinal Regularized Quantile Mixed Model
+<!-- badges: start -->
 
+[![CRAN](https://www.r-pkg.org/badges/version/mixedBayes)](https://cran.r-project.org/package=mixedBayes)
+[![Codecov test
+coverage](https://codecov.io/gh/kunfa/mixedBayes/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kunfa/mixedBayes?branch=master)
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/mixedBayes)](https://www.r-pkg.org:443/pkg/mixedBayes)
+[![R-CMD-check](https://github.com/kunfa/mixedBayes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kunfa/mixedBayes/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
-In longitudinal studies, the same subjects are measured repeatedly over time, leading to correlations among the repeated measurements. Properly accounting for the intra-cluster correlations in the presence of data heterogeneity and long tailed distributions of the disease phenotype is challenging, especially in the context of high dimensional regressions. Here, we aim at developing novel Bayesian regularized quantile mixed effect models to tackle these challenges. We have proposed a Bayesian variable selection in the mixed effect models for longitudinal genomics studies. To dissect important gene - environment interactions, our model can simultaneously identify important main and interaction effects on the individual and group level, which have been facilitated by imposing the spike- and -slab priors through Laplacian shrinkage in the Bayesian quantile hierarchical models. The within - subject dependence among data can be accommodated by incorporating the random effects. An efficient Gibbs sampler has been developed to facilitate fast computation. The Markov chain Monte Carlo algorithms of the proposed and alternative methods are efficiently implemented in 'C++'. The development of this software package and the associated statistical methods have been partially supported by an Innovative Research Award from Johnson Cancer Research Center, Kansas State University.
+In longitudinal studies, the same subjects are measured repeatedly over time, leading to correlations among the repeated measurements. Properly accounting for the intra-cluster correlations in the presence of data heterogeneity and long tailed distributions of the disease phenotype is challenging, especially in the context of high dimensional regressions. In this package, we developed a Bayesian quantile mixed effects model with spike- and -slab priors to dissect important gene - environment interactions under longitudinal genomics studies. An efficient Gibbs sampler has been developed to facilitate fast computation. The Markov chain Monte Carlo algorithms of the proposed and alternative methods are efficiently implemented in 'C++'. The development of this software package and the associated statistical methods have been partially supported by an Innovative Research Award from Johnson Cancer Research Center, Kansas State University.
 
 ## How to install
 
@@ -30,7 +38,7 @@ In longitudinal studies, the same subjects are measured repeatedly over time, le
 
     library(mixedBayes)
     data(data)
-
+    
     fit = mixedBayes(y,e,X,g,w,k,structure=c("group"))
     fit$coefficient
     b = selection(fit,sparse=TRUE)
@@ -39,7 +47,6 @@ In longitudinal studies, the same subjects are measured repeatedly over time, le
     tp = length(intersect(index, pos))
     fp = length(pos) - tp
     list(tp=tp, fp=fp)
-
 #### Example.2 (alternative: robust individual selection under random intercept and slope model)
 
     fit = mixedBayes(y,e,X,g,w,k,structure=c("individual"))
@@ -61,10 +68,7 @@ In longitudinal studies, the same subjects are measured repeatedly over time, le
     tp = length(intersect(index, pos))
     fp = length(pos) - tp
     list(tp=tp, fp=fp)
-
-    
 #### Example.4 (alternative: robust group selection under random intercept model)
-
     fit = mixedBayes(y,e,X,g,w,k,slope=FALSE, structure=c("group"))
     fit$coefficient    
     b = selection(fit,sparse=TRUE)
@@ -73,9 +77,25 @@ In longitudinal studies, the same subjects are measured repeatedly over time, le
     tp = length(intersect(index, pos))
     fp = length(pos) - tp
     list(tp=tp, fp=fp)
+## News
 
+### mixedBayes 0.1.4.1 \[2025-01-28\]
+
+- Fixed minor bugs.
+
+### mixedBayes 0.1.4 \[2025-01-07\]
+
+- Updated README and DESCRIPTION file.
+
+### mixedBayes 0.1.3 \[2024-09-25\]
+
+- Updated with a more efficient Gibbs sampler in the longitudinal setting.
+- Updated the inputs for the main mixedBayes function.
+- Updated the documentation.
+
+  
 ## Methods
 
 This package provides implementation for methods proposed in
 
-  - Fan, K., Jiang, Y., Ma, S., Wang, W. and Wu, C. (2024+). Robust Bayesian variable selection of Gene-environment interactions in the longitudinal study.(submitted)
+  - Fan, K., Jiang, Y., Ma, S., Wang, W. and Wu, C. (2024+). Robust Sparse Bayesian Regression for Longitudinal Gene-Environment Interactions.(Under Review)
