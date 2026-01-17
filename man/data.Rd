@@ -15,7 +15,7 @@
 The data object consists of seven components: y, e, X, g, w ,k and coeff. coeff contains the true values of parameters (main and interaction effects) used for generating Y.
 }
 \description{
-Simulated gene expression data for demonstrating the features of mixedBayes.
+simulated data for demonstrating the features of mixedBayes
 }
 \details{
 \strong{The data and model setting}
@@ -28,6 +28,8 @@ The gene–environment interactions that can be expressed as a Kronecker product
 
 The above model also includes \eqn{Z_{ij}} with random effects \eqn{\alpha_{i}} to account for intra-correlations among repeated measurements.
 For random intercept-and-slope model, \eqn{Z_{ij}^\top = (1,j)} and  \eqn{\alpha_{i} = (\alpha_{i1},\alpha_{i2})^\top}. For random intercept model, \eqn{Z_{ij}^\top = 1} and \eqn{\alpha_{i} = \alpha_{i1}}.
+
+In this example, we generate data under random intercept-and-slope model.
 }
 \examples{
 data(data)

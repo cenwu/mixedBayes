@@ -1,4 +1,4 @@
-LONRBGLSS <- function(y,e,X,g,w,z,k,quant,max.steps,sparse, structure){
+LONRBGLSS <- function(y,e,X,g,w,z,k,quant,max.steps,sparse, structure, iterations, burn.in=NULL){
 
   n = nrow(g)
   m = ncol(g)
@@ -27,9 +27,9 @@ LONRBGLSS <- function(y,e,X,g,w,z,k,quant,max.steps,sparse, structure){
   hatEta2 = matrix(c(rep(1,p)),nrow=q-o)
   hatAlpha = rep(1,q)
   invSigAlpha0 = diag(rep(10^-3,q))
-  alpha1=1
-  gamma1=1
-  hatPhiSq=1
+  alpha1=0
+  gamma1=0
+  hatPhi1Sq=hatPhi2Sq=1
   progress=0
   hatPi1=1/2
   hatPi2=1/2
@@ -38,24 +38,51 @@ LONRBGLSS <- function(y,e,X,g,w,z,k,quant,max.steps,sparse, structure){
   debugging=FALSE
 
   progress = ifelse(debugging, 10^(floor(log10(max.steps))-1), 0)
+  if (is.null(burn.in)) {
+    BI <- 0
+  } else if (burn.in >= 1) {
+    BI <- as.integer(burn.in)
+  } else {
+    stop("burn.in must be NULL or a positive integer.")
+  }
+
+  if (iterations <= BI) {
+    stop("iterations must be larger than burn.in.")
+  }
   if(sparse){
     fit=switch (structure,
                 "bi-level" = RBGLSS(y,E,g,w,max.steps,q,o,k,hatBeta,hatEta2,hatAlpha,hatAta,z,hatTau,hatV,hatSg1,hatSg22,invSigAlpha0,
-                                 hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhiSq,a,b,alpha1,gamma1,sh1,sh0,progress),
+                                 hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhi1Sq,hatPhi2Sq,a,b,alpha1,gamma1,sh1,sh0,progress),
                 "individual" = RBLSS(y,E,g,w,max.steps,q,k,hatBeta,hatEta1,hatAlpha,hatAta,z,hatTau,hatV,hatSg1,hatSg21,invSigAlpha0,
-                                     hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhiSq,a,b,alpha1,gamma1,sh1,sh0,progress)
+                                     hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhi1Sq,hatPhi2Sq,a,b,alpha1,gamma1,sh1,sh0,progress)
     )
   }else{
     fit=switch (structure,
                 "bi-level" =  RBGL(y,E,g,w,max.steps,q,o,k,hatBeta,hatEta2,hatAlpha,hatAta,z,hatTau,hatV,hatSg1,hatSg22,invSigAlpha0,
-                                hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhiSq,a,b,alpha1,gamma1,progress),
+                                hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhi1Sq,hatPhi2Sq,a,b,alpha1,gamma1,progress),
                 "individual" = RBL(y,E,g,w,max.steps,q,k,hatBeta,hatEta1,hatAlpha,hatAta,z,hatTau,hatV,hatSg1,hatSg21,invSigAlpha0,
-                                   hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhiSq,a,b,alpha1,gamma1,progress)
+                                   hatEtaSq1,hatEtaSq2,xi1,xi2,r1,r2,hatPhi1Sq,hatPhi2Sq,a,b,alpha1,gamma1,progress)
+    )
+  }
+  if (is.null(burn.in) || BI == 0) {
+    out <- list(
+      GS.gamma1 = fit$GS.alpha[, 1:(q-o)],
+      GS.gamma0 = fit$GS.alpha[, -(1:(q-o))],
+      GS.gamma2 = fit$GS.beta,
+      GS.gamma3 = fit$GS.eta,
+      GS.alpha  = fit$GS.ata
+    )
+  } else {
+    burn_rows <- seq_len(BI)
+    out <- list(
+      GS.gamma1 = fit$GS.alpha[-burn_rows, 1:(q-o)],
+      GS.gamma0 = fit$GS.alpha[-burn_rows, -(1:(q-o))],
+      GS.gamma2 = fit$GS.beta[-burn_rows,],
+      GS.gamma3 = fit$GS.eta[-burn_rows,],
+      GS.alpha  = fit$GS.ata[-burn_rows,]
     )
   }
 
-  out = list( GS.alpha = fit$GS.alpha, GS.beta = fit$GS.beta,
-              GS.eta = fit$GS.eta, GS.ata = fit$GS.ata)
   out
 
 }

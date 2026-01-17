@@ -1,0 +1,24 @@
+{
+    "id": "3C2670D8",
+    "path": "~/GitHub/mixedBayes/R/mixedBayes.R",
+    "project_path": "R/mixedBayes.R",
+    "type": "r_source",
+    "hash": "2697423847",
+    "contents": "",
+    "dirty": false,
+    "created": 1768623815835.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1768622770,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1768622770,
+    "read_only": false,
+    "read_only_alternatives": []
+}
